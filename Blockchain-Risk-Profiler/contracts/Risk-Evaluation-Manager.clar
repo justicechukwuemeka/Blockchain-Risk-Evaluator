@@ -301,13 +301,11 @@
     ;; Validate account address
     (asserts! (validate-principal-address target-account) ERR-INVALID-PRINCIPAL-ADDRESS)
     
-    ;; Validate all risk scores
-    (asserts! (and 
-                (validate-risk-score credit-score)
-                (validate-risk-score liquidity-score)
-                (validate-risk-score collateral-score)
-                (validate-risk-score history-score)
-              ) ERR-RISK-SCORE-OUT-OF-BOUNDS)
+    ;; Validate each risk score individually to satisfy static analysis
+    (asserts! (validate-risk-score credit-score) ERR-RISK-SCORE-OUT-OF-BOUNDS)
+    (asserts! (validate-risk-score liquidity-score) ERR-RISK-SCORE-OUT-OF-BOUNDS)
+    (asserts! (validate-risk-score collateral-score) ERR-RISK-SCORE-OUT-OF-BOUNDS)
+    (asserts! (validate-risk-score history-score) ERR-RISK-SCORE-OUT-OF-BOUNDS)
     
     ;; Store all dimension evaluations
     (map-set account-risk-dimension-scores 
